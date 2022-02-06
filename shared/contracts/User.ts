@@ -28,5 +28,6 @@ export type UserAPIReq = {
   results: string;
   keyword?: string;
   gender?: User["gender"] | "";
-  sortBy?: "ascend" | "descend" | "";
+  sortBy?: string;
+  sortOrder?: "ascend" | "descend";
 };

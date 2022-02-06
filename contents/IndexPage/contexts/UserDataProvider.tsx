@@ -1,27 +1,50 @@
 import React, {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
 } from "react";
+
 import { User, UserAPIReq, UserAPIRes } from "../../../shared/contracts/User";
+
+import useDebounce from "../../../shared/hooks/useDebounce";
+
 import { get } from "../../../shared/utils/api";
 
-const RESULTS_PER_PAGE = 10;
-
-type UserTableState = {
+export type UserDataState = {
   users: Array<User>;
   status: "LOADING" | "ERROR" | "SUCCESS";
   errorMessage?: string;
 };
 
-const initialTableState: UserTableState = {
+export type UserTableMetaState = {
+  sortBy?: string;
+  sortOrder?: "ascend" | "descend";
+  results: number;
+  page: number;
+};
+
+const initialUserDataState: UserDataState = {
   users: [],
   status: "LOADING",
 };
 
-const UserDataStateContext = createContext<UserTableState>(initialTableState);
+const UserDataStateContext = createContext<UserDataState>(initialUserDataState);
+UserDataStateContext.displayName = "UserDataStateContext";
+
+const UserTableMetaStateContext = createContext<UserTableMetaState>({
+  page: 1,
+  results: 10,
+});
+UserTableMetaStateContext.displayName = "UserTableMetaStateContext";
+const UserTableMetaDispatchContext = createContext<
+  Dispatch<SetStateAction<UserTableMetaState>>
+>(() => {
+  // no-op
+});
 
 type Props = {
   keyword: string;
@@ -31,7 +54,16 @@ type Props = {
 
 const UserDataProvider = (props: Props) => {
   const [tableState, setTableState] =
-    useState<UserTableState>(initialTableState);
+    useState<UserDataState>(initialUserDataState);
+
+  const [tableMetaState, setTableSortState] = useState<UserTableMetaState>({
+    page: 1,
+    results: 20,
+  });
+
+  const debouncedSortBy = useDebounce(tableMetaState.sortBy, 300);
+  const debouncedSortOrder = useDebounce(tableMetaState.sortOrder, 300);
+  const debouncedPage = useDebounce(tableMetaState.page, 300);
 
   const loadUser = async (params: UserAPIReq) => {
     try {
@@ -39,7 +71,11 @@ const UserDataProvider = (props: Props) => {
         ...prev,
         status: "LOADING",
       }));
-      const res = await get<UserAPIRes>("/api", params);
+      const res = await get<UserAPIRes>("/api", {
+        ...params,
+        // Gender filter is bugged when using custom seed :(
+        // seed: '18e5c6a3fb719df9',
+      });
       if (res.errorMsg) {
         setTableState((prev) => ({
           ...prev,
@@ -56,29 +92,55 @@ const UserDataProvider = (props: Props) => {
     } catch (err) {
       if (process.env.NODE_ENV === "development") {
         console.log(err);
-        console.log("ERROR");
       }
+      setTableState((prev) => ({
+        ...prev,
+        status: "ERROR",
+      }));
     }
   };
 
   useEffect(() => {
     loadUser({
-      page: "1",
-      results: RESULTS_PER_PAGE.toString(),
+      page: debouncedPage.toString(),
+      results: tableMetaState.results.toString(),
       keyword: props.keyword,
       gender: props.gender,
+      sortBy: debouncedSortBy,
+      sortOrder: debouncedSortOrder,
     });
-  }, [props.keyword, props.gender]);
+  }, [
+    props.keyword,
+    props.gender,
+    tableMetaState.results,
+    debouncedSortBy,
+    debouncedSortOrder,
+    debouncedPage,
+  ]);
 
   return (
     <UserDataStateContext.Provider value={tableState}>
-      {props.children}
+      <UserTableMetaStateContext.Provider value={tableMetaState}>
+        <UserTableMetaDispatchContext.Provider value={setTableSortState}>
+          {props.children}
+        </UserTableMetaDispatchContext.Provider>
+      </UserTableMetaStateContext.Provider>
     </UserDataStateContext.Provider>
   );
 };
 
 export const useUserDataState = () => {
   return useContext(UserDataStateContext);
+};
+
+export const useUserTableMeta = (): [
+  UserTableMetaState,
+  Dispatch<SetStateAction<UserTableMetaState>>
+] => {
+  return [
+    useContext(UserTableMetaStateContext),
+    useContext(UserTableMetaDispatchContext),
+  ];
 };
 
 export default UserDataProvider;

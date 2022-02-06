@@ -4,9 +4,12 @@ type QueryStringObj = {
 
 export async function get<Res>(
   path: string,
-  params?: QueryStringObj
+  queryParams?: QueryStringObj
 ): Promise<Res> {
-  const queryStr = params ? `?${new URLSearchParams(params).toString()}` : "";
+  let queryStr = "";
+  if (queryParams) {
+    queryStr = `?${new URLSearchParams(cleanQueryObj(queryParams)).toString()}`;
+  }
   const baseUrl = process.env.NEXT_PUBLIC_API_HOST as string;
   const apiUrl = baseUrl + path + queryStr;
   const response = await fetch(apiUrl, {
@@ -21,3 +24,17 @@ export async function get<Res>(
     );
   }
 }
+
+// HELPERS
+const cleanQueryObj = (params: QueryStringObj) => {
+  return Object.entries(params).reduce((prev, current) => {
+    const [key, val] = current;
+    if (val) {
+      return {
+        ...prev,
+        [key]: val,
+      };
+    }
+    return prev;
+  }, {});
+};
