@@ -26,7 +26,7 @@ export async function get<Res>(
 }
 
 // HELPERS
-const cleanQueryObj = (params: QueryStringObj) => {
+export const cleanQueryObj = (params: QueryStringObj) => {
   return Object.entries(params).reduce((prev, current) => {
     const [key, val] = current;
     if (val) {
