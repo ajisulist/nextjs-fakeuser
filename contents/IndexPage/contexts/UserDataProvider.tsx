@@ -63,8 +63,8 @@ const UserDataProvider = (props: Props) => {
 
   useEffect(() => {
     loadUser({
-      page: 1,
-      results: RESULTS_PER_PAGE,
+      page: "1",
+      results: RESULTS_PER_PAGE.toString(),
       keyword: props.keyword,
       gender: props.gender,
     });
