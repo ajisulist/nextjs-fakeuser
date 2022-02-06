@@ -11,7 +11,6 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import { User } from "../../shared/contracts/User";
 
@@ -22,7 +21,7 @@ import UserDataProvider from "./contexts/UserDataProvider";
 
 function IndexPage() {
   const theme = useTheme();
-  const isSmallDevice = useMediaQuery(theme.breakpoints.up("sm"));
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [keyword, setKeyword, debouncedKeyword] = useDebouncedState<string>(
     "",
@@ -52,7 +51,7 @@ function IndexPage() {
               marginTop: 1,
               display: "grid",
               gap: 1,
-              gridTemplateColumns: isSmallDevice
+              gridTemplateColumns: !isSmallDevice
                 ? "1fr 150px 150px"
                 : undefined,
             }}
