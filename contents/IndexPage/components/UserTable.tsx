@@ -1,3 +1,5 @@
+import React from "react";
+import format from "date-fns/format";
 import {
   TableContainer,
   Table,
@@ -7,8 +9,9 @@ import {
   TableSortLabel,
   TableBody,
   TablePagination,
+  Skeleton,
+  Typography,
 } from "@mui/material";
-import React from "react";
 import {
   UserTableMetaState,
   useUserDataState,
@@ -22,9 +25,16 @@ const UserTable = () => {
   const handleToggleSort = (column: string) => () => {
     setTableMeta((prev) => {
       if (column === prev.sortBy) {
+        if (prev.sortOrder === "ascend") {
+          return {
+            ...prev,
+            sortOrder: "descend",
+          };
+        }
         return {
           ...prev,
-          sortOrder: prev.sortOrder === "ascend" ? "descend" : "ascend",
+          sortBy: "",
+          sortOrder: "",
         };
       }
       return {
@@ -35,10 +45,63 @@ const UserTable = () => {
     });
   };
 
+  let tableContent = null;
+
   if (data.status === "LOADING") {
-    <h1>Loading....</h1>;
+    tableContent = new Array(tableMeta.results).fill(null).map((_, idx) => {
+      return (
+        <TableRow key={idx}>
+          <TableCell>
+            <Skeleton animation="wave" height={20} width={90} />
+          </TableCell>
+          <TableCell>
+            <Skeleton animation="wave" height={20} width={250} />
+          </TableCell>
+          <TableCell>
+            <Skeleton animation="wave" height={20} width={250} />
+          </TableCell>
+          <TableCell>
+            <Skeleton animation="wave" height={20} width={100} />
+          </TableCell>
+          <TableCell>
+            <Skeleton animation="wave" height={20} />
+          </TableCell>
+        </TableRow>
+      );
+    });
   }
   if (data.status === "ERROR") {
+    tableContent = (
+      <>
+        <TableRow>
+          <TableCell colSpan={5} align="center">
+            <Typography variant="h6" component="div" mt={10}>
+              Failed to load user data
+            </Typography>
+            <Typography variant="subtitle2" component="div" mb={10}>
+              Please check your internet connection and try again.
+            </Typography>
+          </TableCell>
+        </TableRow>
+      </>
+    );
+  }
+
+  if (data.status === "SUCCESS") {
+    tableContent = data.users.map((el) => {
+      const fullName = `${el.name.title} ${el.name.first} ${el.name.last}`;
+      return (
+        <TableRow key={el.login.username}>
+          <TableCell>{el.login.username}</TableCell>
+          <TableCell>{fullName}</TableCell>
+          <TableCell>{el.email}</TableCell>
+          <TableCell>{el.gender.toUpperCase()}</TableCell>
+          <TableCell>
+            {format(new Date(el.registered.date), "dd MMM yyyy")}
+          </TableCell>
+        </TableRow>
+      );
+    });
   }
 
   return (
@@ -88,25 +151,12 @@ const UserTable = () => {
                 direction={getDirection(tableMeta.sortOrder)}
                 onClick={handleToggleSort("registerDate")}
               >
-                Register Date
+                Ragistration Date
               </TableSortLabel>
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {data.users.map((el) => {
-            const fullName = `${el.name.title} ${el.name.first} ${el.name.last}`;
-            return (
-              <TableRow>
-                <TableCell>{el.login.username}</TableCell>
-                <TableCell>{fullName}</TableCell>
-                <TableCell>{el.email}</TableCell>
-                <TableCell>{el.gender.toUpperCase()}</TableCell>
-                <TableCell>{el.registered.date}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
+        <TableBody>{tableContent}</TableBody>
       </Table>
       {/* TablePagination using zero-based indexed page, fakeuserapi using one-based indexed page */}
       <TablePagination

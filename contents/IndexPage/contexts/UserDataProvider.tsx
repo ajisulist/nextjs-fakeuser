@@ -22,7 +22,7 @@ export type UserDataState = {
 
 export type UserTableMetaState = {
   sortBy?: string;
-  sortOrder?: "ascend" | "descend";
+  sortOrder?: "ascend" | "descend" | "";
   results: number;
   page: number;
 };
@@ -58,7 +58,7 @@ const UserDataProvider = (props: Props) => {
 
   const [tableMetaState, setTableSortState] = useState<UserTableMetaState>({
     page: 1,
-    results: 20,
+    results: 10,
   });
 
   const debouncedSortBy = useDebounce(tableMetaState.sortBy, 300);
