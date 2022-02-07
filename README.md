@@ -1,34 +1,131 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
 
+  <h1 align="center">Next.js FakeUser</h1>
+
+  <p align="center">
+	A simple app to display user list created using Next.js and randomuser.me API    
+    <br />
+    <a href="https://ajisulistyo-fakeuser.vercel.app/"><strong>See Demo on Vercel »</strong></a>
+    <br />
+  </p>
+</div>
+
+
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#installation">Installation</a></li>
+            <li><a href="#test">Run Test</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li>
+	    <a href="#features-list">Features</a>
+	    <ul>
+	        <li><a href="#basic-feature">Basic Feature</a></li>
+	        <li><a href="#added-functionality">Added Functionality</a></li>
+	        <li><a href="#bonus-point">Bonus Point</a></li>
+      </ul>
+	 </li>
+    <li><a href="#web-performance-improvement">Web Performace Improvement</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+<!-- GETTING STARTED -->
 ## Getting Started
 
-First, run the development server:
+Let me guide you on how to run this repo on your personal computer.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Requirements
+-   Working internet connection
+-   Minimum **Node 12.22.0** to run this app
+-   Few minutes to install dependecies
+ 
+### Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone the repo
+   ```sh
+   git clone git@github.com:ajisulist/nextjs-fakeuser.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+   or if you're using Yarn
+   ```sh
+   yarn
+   ```
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Test
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+1. To run test 
+   ```sh
+   npm run test
+   ```
+   or if you're using Yarn
+   ```sh
+   yarn test
+   ```
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To run this application run this command
+   ```js
+   npm run dev
+   ```
+or if you're using yarn
+   ```js
+   yarn dev;
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+And then open http://localhost:3000 on your browser
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## Deploy on Vercel
+## Features List
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Basic Feature
+- [x] Get User List
+- [x] Filter by keyword (Filter by `keyword` by sending the correct URL Query params)
+- [x] Filter by gender (Filter by `gender` by sending the correct URL Query params)
+- [x] Sort all column (`sortBy` and `orderBy` by sending the correct URL Query params)
+- [x] Pagination
+- [x] Implement filter and sort on using API
+ 
+###  Added Functionality
+-  [x] Debounce keyword filter (typing on keyword filter will trigger only on API call after idle)
+-  [x] Debounce sort (spamming click on table header will trigger only one API call after idle)
+-  [x] Debounce pagination (spamming click on next button or prev button will trigger one API call after idle)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Bonus Point
+- [x] Unit Test on utils function, hooks, API, and React Component
+- [x] Web Performance improvement (see [Web Performance Improvement](#web-performance-improvement) Section) 
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Web Performance Improvement
+You can see the explanation about how i improve this web page performance improvement here.
+    <a href="https://docs.google.com/presentation/d/1duWDLk4IFmhDMkslAkXR-tvcHuoLXJ0hwUvjWzuCS4M/edit?usp=sharing"><strong>See Explanation »</strong></a>
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Aji Sulisty Nugroho - ajisulist@gmail.com
+
+<p align="right">(<a href="#top">back to top</a>)</p>
