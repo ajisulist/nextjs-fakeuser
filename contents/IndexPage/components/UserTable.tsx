@@ -151,7 +151,7 @@ const UserTable = () => {
                 direction={getDirection(tableMeta.sortOrder)}
                 onClick={handleToggleSort("registerDate")}
               >
-                Ragistration Date
+                Registeration Date
               </TableSortLabel>
             </TableCell>
           </TableRow>
