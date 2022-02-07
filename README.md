@@ -126,6 +126,6 @@ You can see the explanation about how i improve this web page performance improv
 <!-- CONTACT -->
 ## Contact
 
-Aji Sulisty Nugroho - ajisulist@gmail.com
+Aji Sulistyo Nugroho - ajisulist@gmail.com
 
 <p align="right">(<a href="#top">back to top</a>)</p>
