@@ -7,8 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
