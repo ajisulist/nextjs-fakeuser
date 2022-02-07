@@ -61,6 +61,9 @@ function IndexPage() {
               variant="outlined"
               size="small"
               value={keyword}
+              inputProps={{
+                ["data-testid"]: "keywordField",
+              }}
               onChange={(evt) => {
                 setKeyword(evt.target.value);
               }}
@@ -69,6 +72,16 @@ function IndexPage() {
               size="small"
               displayEmpty
               value={gender}
+              SelectDisplayProps={{
+                // Ignore MUI error because we assign testId
+                // @ts-ignore
+                ["data-testid"]: "genderField",
+              }}
+              MenuProps={{
+                // Ignore MUI error because we assign testId
+                // @ts-ignore
+                ["data-testid"]: "genderOptions",
+              }}
               onChange={(evt) => {
                 setGender(evt.target.value as User["gender"] | "");
               }}

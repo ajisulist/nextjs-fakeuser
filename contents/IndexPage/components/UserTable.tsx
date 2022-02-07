@@ -50,7 +50,7 @@ const UserTable = () => {
   if (data.status === "LOADING") {
     tableContent = new Array(tableMeta.results).fill(null).map((_, idx) => {
       return (
-        <TableRow key={idx}>
+        <TableRow key={idx} id="tableBody">
           <TableCell>
             <Skeleton animation="wave" height={20} width={90} />
           </TableCell>
