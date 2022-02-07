@@ -1,7 +1,7 @@
-import { render, waitFor, act } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import Index from "../index";
+import IndexPage from "../IndexPage";
 
 import mock from "./user.mock.json";
 
@@ -20,7 +20,7 @@ describe("Index Page", () => {
 
   test("initial render should load page 1 and 10 results", async () => {
     fetch.mockResponse(JSON.stringify(mock));
-    render(<Index />);
+    render(<IndexPage />);
 
     // first load should only called User API once and only with 'results' and 'page'
     await waitFor(() => expect(fetch).toBeCalledTimes(1));
@@ -29,7 +29,7 @@ describe("Index Page", () => {
 
   test("filtering should load API based on selected filter", async () => {
     fetch.mockResponse(JSON.stringify(mock));
-    const { getByTestId, getByText } = render(<Index />);
+    const { getByTestId, getByText } = render(<IndexPage />);
 
     // first load should only called User API once and only with 'results' and 'page'
     await waitFor(() => expect(fetch).toBeCalledTimes(1));
